@@ -1,0 +1,83 @@
+# Translation file for DS Backgamom Credits - English (US)
+msgid ""
+msgstr ""
+"Project-Id-Version: DS Backgamom Credits 2.0.0\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "O plugin DS Backgamom Credits requer que o WooCommerce esteja instalado e ativo."
+msgstr "DS Backgamom Credits plugin requires WooCommerce to be installed and active."
+
+msgid "Créditos"
+msgstr "Credits"
+
+msgid "Saldo"
+msgstr "Balance"
+
+msgid "Adicionar Créditos"
+msgstr "Add Credits"
+
+msgid "Deduzir Créditos"
+msgstr "Deduct Credits"
+
+msgid "Histórico"
+msgstr "History"
+
+msgid "Saques"
+msgstr "Withdrawals"
+
+msgid "Configurações"
+msgstr "Settings"
+
+msgid "Relatórios"
+msgstr "Reports"
+
+msgid "Saldo insuficiente"
+msgstr "Insufficient balance"
+
+msgid "Créditos adicionados com sucesso"
+msgstr "Credits added successfully"
+
+msgid "Créditos deduzidos com sucesso"
+msgstr "Credits deducted successfully"
+
+msgid "Erro ao processar transação"
+msgstr "Error processing transaction"
+
+msgid "Saque solicitado com sucesso"
+msgstr "Withdrawal requested successfully"
+
+msgid "Saque aprovado"
+msgstr "Withdrawal approved"
+
+msgid "Saque negado"
+msgstr "Withdrawal denied"
+
+msgid "Quantidade de Créditos"
+msgstr "Credits Amount"
+
+msgid "Insira a quantidade de créditos que este produto concede ao cliente."
+msgstr "Enter the amount of credits this product grants to the customer."
+
+msgid "Seu saldo de créditos: %s"
+msgstr "Your credit balance: %s"
+
+msgid "Usuário não logado."
+msgstr "User not logged in."
+
+msgid "Você precisa estar logado para ver seus créditos."
+msgstr "You need to be logged in to view your credits."
+
+msgid "Meus Créditos"
+msgstr "My Credits"
+
+msgid "créditos disponíveis"
+msgstr "available credits"
+
+msgid "Comprar Créditos"
+msgstr "Buy Credits"
+
+msgid "%d créditos adicionados ao usuário. Novo saldo: %d."
+msgstr "%d credits added to user. New balance: %d."

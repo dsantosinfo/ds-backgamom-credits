@@ -1,0 +1,83 @@
+# Translation file for DS Backgamom Credits - Portuguese (Brazil)
+msgid ""
+msgstr ""
+"Project-Id-Version: DS Backgamom Credits 2.0.0\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "O plugin DS Backgamom Credits requer que o WooCommerce esteja instalado e ativo."
+msgstr "O plugin DS Backgamom Credits requer que o WooCommerce esteja instalado e ativo."
+
+msgid "Créditos"
+msgstr "Créditos"
+
+msgid "Saldo"
+msgstr "Saldo"
+
+msgid "Adicionar Créditos"
+msgstr "Adicionar Créditos"
+
+msgid "Deduzir Créditos"
+msgstr "Deduzir Créditos"
+
+msgid "Histórico"
+msgstr "Histórico"
+
+msgid "Saques"
+msgstr "Saques"
+
+msgid "Configurações"
+msgstr "Configurações"
+
+msgid "Relatórios"
+msgstr "Relatórios"
+
+msgid "Saldo insuficiente"
+msgstr "Saldo insuficiente"
+
+msgid "Créditos adicionados com sucesso"
+msgstr "Créditos adicionados com sucesso"
+
+msgid "Créditos deduzidos com sucesso"
+msgstr "Créditos deduzidos com sucesso"
+
+msgid "Erro ao processar transação"
+msgstr "Erro ao processar transação"
+
+msgid "Saque solicitado com sucesso"
+msgstr "Saque solicitado com sucesso"
+
+msgid "Saque aprovado"
+msgstr "Saque aprovado"
+
+msgid "Saque negado"
+msgstr "Saque negado"
+
+msgid "Quantidade de Créditos"
+msgstr "Quantidade de Créditos"
+
+msgid "Insira a quantidade de créditos que este produto concede ao cliente."
+msgstr "Insira a quantidade de créditos que este produto concede ao cliente."
+
+msgid "Seu saldo de créditos: %s"
+msgstr "Seu saldo de créditos: %s"
+
+msgid "Usuário não logado."
+msgstr "Usuário não logado."
+
+msgid "Você precisa estar logado para ver seus créditos."
+msgstr "Você precisa estar logado para ver seus créditos."
+
+msgid "Meus Créditos"
+msgstr "Meus Créditos"
+
+msgid "créditos disponíveis"
+msgstr "créditos disponíveis"
+
+msgid "Comprar Créditos"
+msgstr "Comprar Créditos"
+
+msgid "%d créditos adicionados ao usuário. Novo saldo: %d."
+msgstr "%d créditos adicionados ao usuário. Novo saldo: %d."

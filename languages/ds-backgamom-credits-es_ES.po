@@ -1,0 +1,83 @@
+# Translation file for DS Backgamom Credits - Spanish (Spain)
+msgid ""
+msgstr ""
+"Project-Id-Version: DS Backgamom Credits 2.0.0\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "O plugin DS Backgamom Credits requer que o WooCommerce esteja instalado e ativo."
+msgstr "El plugin DS Backgamom Credits requiere que WooCommerce esté instalado y activo."
+
+msgid "Créditos"
+msgstr "Créditos"
+
+msgid "Saldo"
+msgstr "Saldo"
+
+msgid "Adicionar Créditos"
+msgstr "Añadir Créditos"
+
+msgid "Deduzir Créditos"
+msgstr "Deducir Créditos"
+
+msgid "Histórico"
+msgstr "Historial"
+
+msgid "Saques"
+msgstr "Retiros"
+
+msgid "Configurações"
+msgstr "Configuración"
+
+msgid "Relatórios"
+msgstr "Informes"
+
+msgid "Saldo insuficiente"
+msgstr "Saldo insuficiente"
+
+msgid "Créditos adicionados com sucesso"
+msgstr "Créditos añadidos exitosamente"
+
+msgid "Créditos deduzidos com sucesso"
+msgstr "Créditos deducidos exitosamente"
+
+msgid "Erro ao processar transação"
+msgstr "Error al procesar transacción"
+
+msgid "Saque solicitado com sucesso"
+msgstr "Retiro solicitado exitosamente"
+
+msgid "Saque aprovado"
+msgstr "Retiro aprobado"
+
+msgid "Saque negado"
+msgstr "Retiro denegado"
+
+msgid "Quantidade de Créditos"
+msgstr "Cantidad de Créditos"
+
+msgid "Insira a quantidade de créditos que este produto concede ao cliente."
+msgstr "Ingrese la cantidad de créditos que este producto otorga al cliente."
+
+msgid "Seu saldo de créditos: %s"
+msgstr "Tu saldo de créditos: %s"
+
+msgid "Usuário não logado."
+msgstr "Usuario no conectado."
+
+msgid "Você precisa estar logado para ver seus créditos."
+msgstr "Necesitas iniciar sesión para ver tus créditos."
+
+msgid "Meus Créditos"
+msgstr "Mis Créditos"
+
+msgid "créditos disponíveis"
+msgstr "créditos disponibles"
+
+msgid "Comprar Créditos"
+msgstr "Comprar Créditos"
+
+msgid "%d créditos adicionados ao usuário. Novo saldo: %d."
+msgstr "%d créditos añadidos al usuario. Nuevo saldo: %d."
