@@ -27,13 +27,14 @@ class DS_Frontend_Shortcodes {
 
     public function enqueue_scripts() {
         // Sempre carregar CSS para shortcodes
-        wp_enqueue_style( 'ds-frontend-credits-css', DSBC_PLUGIN_URL . 'assets/frontend.css', [], DSBC_VERSION );
+        wp_enqueue_style( 'ds-frontend-credits-css', DSBC_PLUGIN_URL . 'assets/css/frontend.css', [], DSBC_VERSION );
         
         // Carregar JS apenas se necessário
         global $post;
-        if ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ds_credit_dashboard' ) ||
-             has_shortcode( $post->post_content, 'ds_credit_history' ) ) {
-            wp_enqueue_script( 'ds-frontend-credits', DSBC_PLUGIN_URL . 'assets/frontend.js', [ 'jquery' ], DSBC_VERSION, true );
+        if ( is_a( $post, 'WP_Post' ) && (
+             has_shortcode( $post->post_content, 'ds_credit_dashboard' ) ||
+             has_shortcode( $post->post_content, 'ds_credit_history' ) ) ) {
+            wp_enqueue_script( 'ds-frontend-credits', DSBC_PLUGIN_URL . 'assets/js/frontend.js', [ 'jquery' ], DSBC_VERSION, true );
             wp_localize_script( 'ds-frontend-credits', 'dsbc_ajax', [
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'nonce' => wp_create_nonce( 'ds_frontend_nonce' )
@@ -43,8 +44,8 @@ class DS_Frontend_Shortcodes {
 
     private function ensure_scripts_loaded() {
         if ( ! self::$scripts_loaded ) {
-            wp_enqueue_style( 'ds-frontend-credits-css', DSBC_PLUGIN_URL . 'assets/frontend.css', [], DSBC_VERSION );
-            wp_enqueue_script( 'ds-frontend-credits', DSBC_PLUGIN_URL . 'assets/frontend.js', [ 'jquery' ], DSBC_VERSION, true );
+            wp_enqueue_style( 'ds-frontend-credits-css', DSBC_PLUGIN_URL . 'assets/css/frontend.css', [], DSBC_VERSION );
+            wp_enqueue_script( 'ds-frontend-credits', DSBC_PLUGIN_URL . 'assets/js/frontend.js', [ 'jquery' ], DSBC_VERSION, true );
             wp_localize_script( 'ds-frontend-credits', 'dsbc_ajax', [
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'nonce' => wp_create_nonce( 'ds_frontend_nonce' )

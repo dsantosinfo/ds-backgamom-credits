@@ -26,6 +26,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
     }
 
     protected function register_controls() {
+        // Conteúdo
         $this->start_controls_section(
             'content_section',
             [
@@ -40,6 +41,200 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
                 'label' => __( 'Mostrar Equivalente em BRL', 'ds-backgamom-credits' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'yes',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Estilo da Tabela
+        $this->start_controls_section(
+            'table_style',
+            [
+                'label' => __( 'Tabela', 'ds-backgamom-credits' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'table_border_color',
+            [
+                'label' => __( 'Cor da Borda', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#ddd',
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-table th, {{WRAPPER}} .ds-cart-table td' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'table_padding',
+            [
+                'label' => __( 'Espaçamento Interno', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'default' => ['top' => 15, 'right' => 15, 'bottom' => 15, 'left' => 15],
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-table th, {{WRAPPER}} .ds-cart-table td' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Estilo dos Preços
+        $this->start_controls_section(
+            'price_style',
+            [
+                'label' => __( 'Preços', 'ds-backgamom-credits' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'price_color',
+            [
+                'label' => __( 'Cor dos Preços', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#2c5aa0',
+                'selectors' => [
+                    '{{WRAPPER}} .price-credits, {{WRAPPER}} .total-credits' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'price_typography',
+                'selector' => '{{WRAPPER}} .price-credits, {{WRAPPER}} .total-credits',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Estilo dos Botões
+        $this->start_controls_section(
+            'button_style',
+            [
+                'label' => __( 'Botões', 'ds-backgamom-credits' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'button_bg_color',
+            [
+                'label' => __( 'Cor de Fundo', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#2c5aa0',
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-actions button, {{WRAPPER}} .checkout-button' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_text_color',
+            [
+                'label' => __( 'Cor do Texto', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#ffffff',
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-actions button, {{WRAPPER}} .checkout-button' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_bg',
+            [
+                'label' => __( 'Cor de Fundo (Hover)', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#1e4080',
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-actions button:hover, {{WRAPPER}} .checkout-button:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_padding',
+            [
+                'label' => __( 'Espaçamento Interno', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'default' => ['top' => 10, 'right' => 20, 'bottom' => 10, 'left' => 20],
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-actions button, {{WRAPPER}} .checkout-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_border_radius',
+            [
+                'label' => __( 'Borda Arredondada', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => ['size' => 4],
+                'range' => ['px' => ['min' => 0, 'max' => 50]],
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-actions button, {{WRAPPER}} .checkout-button' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'selector' => '{{WRAPPER}} .ds-cart-actions button, {{WRAPPER}} .checkout-button',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Estilo do Total
+        $this->start_controls_section(
+            'totals_style',
+            [
+                'label' => __( 'Total do Carrinho', 'ds-backgamom-credits' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control(
+            'totals_bg_color',
+            [
+                'label' => __( 'Cor de Fundo', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#f8f9fa',
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-totals' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'totals_padding',
+            [
+                'label' => __( 'Espaçamento Interno', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'default' => ['top' => 20, 'right' => 20, 'bottom' => 20, 'left' => 20],
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-totals' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'totals_border_radius',
+            [
+                'label' => __( 'Borda Arredondada', 'ds-backgamom-credits' ),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'default' => ['size' => 8],
+                'range' => ['px' => ['min' => 0, 'max' => 50]],
+                'selectors' => [
+                    '{{WRAPPER}} .ds-cart-totals' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
             ]
         );
 
@@ -73,7 +268,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         echo '</form>';
         echo '</div>';
         
-        $this->add_styles();
+        $this->add_base_styles();
     }
 
     private function render_empty_cart() {
@@ -112,7 +307,8 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         $quantity = $cart_item['quantity'];
         
         $credits = $this->get_product_credits( $product_id );
-        $brl_price = $credits * 5.67; // Taxa fixa para simplicidade
+        $exchange_rate = DS_Credit_Converter::get_exchange_rate();
+        $brl_price = $credits * $exchange_rate;
         
         echo '<tr>';
         
@@ -123,7 +319,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         
         // Preço unitário
         echo '<td>';
-        echo '<div class="price-credits">' . $credits . '</div>';
+        echo '<div class="price-credits">' . number_format( $credits, 2 ) . '</div>';
         echo '<small>(US$ ' . number_format( $credits, 2 ) . ')</small>';
         if ( ($settings['show_brl_equivalent'] ?? 'yes') === 'yes' ) {
             echo '<br><small>R$ ' . number_format( $brl_price, 2, ',', '.' ) . '</small>';
@@ -138,8 +334,8 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         // Total
         echo '<td>';
         $total_credits = $credits * $quantity;
-        $total_brl = $total_credits * 5.67;
-        echo '<div class="total-credits">' . $total_credits . '</div>';
+        $total_brl = $total_credits * $exchange_rate;
+        echo '<div class="total-credits">' . number_format( $total_credits, 2 ) . '</div>';
         echo '<small>(US$ ' . number_format( $total_credits, 2 ) . ')</small>';
         if ( ($settings['show_brl_equivalent'] ?? 'yes') === 'yes' ) {
             echo '<br><small>R$ ' . number_format( $total_brl, 2, ',', '.' ) . '</small>';
@@ -148,7 +344,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         
         // Remover
         echo '<td>';
-        echo '<a href="' . esc_url( wc_get_cart_remove_url( $cart_item_key ) ) . '">×</a>';
+        echo '<a href="' . esc_url( wc_get_cart_remove_url( $cart_item_key ) ) . '" class="remove-item">×</a>';
         echo '</td>';
         
         echo '</tr>';
@@ -168,7 +364,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         echo '<h3>Total do Carrinho</h3>';
         
         echo '<div class="total-row">';
-        echo '<span>Total: ' . $cart_totals['credits'] . '</span>';
+        echo '<span>Total: ' . number_format( $cart_totals['credits'], 2 ) . '</span>';
         echo '<small>(US$ ' . number_format( $cart_totals['credits'], 2 ) . ')</small>';
         if ( ($settings['show_brl_equivalent'] ?? 'yes') === 'yes' ) {
             echo '<br><span>Valor para Pagamento: R$ ' . number_format( $cart_totals['brl_price'], 2, ',', '.' ) . '</span>';
@@ -195,6 +391,7 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
     private function calculate_cart_totals() {
         $cart = WC()->cart;
         $total_credits = 0;
+        $exchange_rate = DS_Credit_Converter::get_exchange_rate();
         
         foreach ( $cart->get_cart() as $cart_item ) {
             $product_id = $cart_item['product_id'];
@@ -205,11 +402,11 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         
         return [
             'credits' => $total_credits,
-            'brl_price' => $total_credits * 5.67
+            'brl_price' => $total_credits * $exchange_rate
         ];
     }
 
-    private function add_styles() {
+    private function add_base_styles() {
         ?>
         <style>
         .ds-cart-table {
@@ -219,41 +416,68 @@ class DS_Cart_Widget extends \Elementor\Widget_Base {
         }
         .ds-cart-table th,
         .ds-cart-table td {
-            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid;
         }
         .price-credits,
         .total-credits {
             font-weight: bold;
-            color: #2c5aa0;
         }
         .qty-input {
             width: 60px;
             text-align: center;
             padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
         }
         .ds-cart-actions {
             margin: 20px 0;
         }
         .ds-cart-actions button,
         .checkout-button {
-            background: #2c5aa0;
-            color: white;
-            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
             text-decoration: none;
             margin-right: 10px;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.3s ease;
         }
-        .ds-cart-totals {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
+        .ds-cart-actions a {
+            color: #666;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .ds-cart-actions a:hover {
+            color: #333;
         }
         .total-row {
             font-size: 1.2em;
             margin-bottom: 15px;
+        }
+        .ds-empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .ds-empty-cart h2 {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .ds-empty-cart a {
+            background: #2c5aa0;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .remove-item {
+            color: #e74c3c;
+            font-size: 18px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .remove-item:hover {
+            color: #c0392b;
         }
         </style>
         <?php

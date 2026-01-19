@@ -248,31 +248,6 @@ final class DS_Backgamom_Credits {
         
         // Elementor Widgets - carrega sempre e verifica internamente
         require_once DSBC_PLUGIN_PATH . 'includes/class-ds-elementor-widgets.php';
-        
-        // Arquivo de teste (remover em produção)
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( DSBC_PLUGIN_PATH . 'teste-shortcodes.php' ) ) {
-            require_once DSBC_PLUGIN_PATH . 'teste-shortcodes.php';
-        }
-        
-        // Debug de notificações (remover em produção)
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( DSBC_PLUGIN_PATH . 'debug-notifications.php' ) ) {
-            // require_once DSBC_PLUGIN_PATH . 'debug-notifications.php';
-        }
-        
-        // Teste de notificações (remover em produção)
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( DSBC_PLUGIN_PATH . 'test-notifications.php' ) ) {
-            // require_once DSBC_PLUGIN_PATH . 'test-notifications.php';
-        }
-        
-        // Debug Elementor (temporário)
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( DSBC_PLUGIN_PATH . 'debug-elementor.php' ) ) {
-            require_once DSBC_PLUGIN_PATH . 'debug-elementor.php';
-        }
-        
-        // Limpeza de templates (temporário)
-        if ( defined( 'WP_DEBUG' ) && WP_DEBUG && file_exists( DSBC_PLUGIN_PATH . 'clean-templates.php' ) ) {
-            require_once DSBC_PLUGIN_PATH . 'clean-templates.php';
-        }
     }
 
     /**

@@ -12,23 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DS_Admin_Settings_USD {
 
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_settings_page' ], 30 );
         add_action( 'admin_init', [ $this, 'register_settings' ] );
         add_action( 'wp_ajax_ds_update_exchange_rate', [ $this, 'ajax_update_exchange_rate' ] );
-    }
-
-    /**
-     * Adiciona página de configurações
-     */
-    public function add_settings_page() {
-        add_submenu_page(
-            'ds-backgamom-credits',
-            'Configurações USD',
-            'Configurações USD',
-            'manage_options',
-            'ds-settings-usd',
-            [ $this, 'settings_page' ]
-        );
     }
 
     /**
@@ -70,14 +55,14 @@ class DS_Admin_Settings_USD {
                                         <input type="number" 
                                                name="ds_backgamom_credits_settings[exchange_rate]" 
                                                value="<?php echo esc_attr( $current_rate ); ?>" 
-                                               step="0.01" 
+                                               step="0.0001" 
                                                min="1" 
                                                max="20" 
-                                               style="width: 100px; font-size: 1.2em; font-weight: bold;"
+                                               style="width: 120px; font-size: 1.2em; font-weight: bold;"
                                                id="exchange_rate_input">
                                         <span style="font-size: 1.2em; font-weight: bold;">BRL</span>
                                     </div>
-                                    <p class="description">Taxa de conversão de dólares para reais. Exemplo: 5.67 significa que US$ 1,00 = R$ 5,67</p>
+                                    <p class="description">Taxa de conversão de dólares para reais. Exemplo: 5.3798 significa que US$ 1,00 = R$ 5,3798</p>
                                 </td>
                             </tr>
                             
@@ -130,7 +115,7 @@ class DS_Admin_Settings_USD {
                         <ul style="margin: 0; padding-left: 20px;">
                             <li>Taxa mínima: R$ 1,00</li>
                             <li>Taxa máxima: R$ 20,00</li>
-                            <li>Precisão: 2 casas decimais</li>
+                            <li>Precisão: 4 casas decimais</li>
                             <li>Atualização: Manual ou automática</li>
                         </ul>
                     </div>
@@ -151,8 +136,8 @@ class DS_Admin_Settings_USD {
             const brl = usd * rate;
             
             document.getElementById('calc_brl').value = 'R$ ' + brl.toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                minimumFractionDigits: 4,
+                maximumFractionDigits: 4
             });
         }
 
@@ -165,7 +150,7 @@ class DS_Admin_Settings_USD {
                 const brl = usd * rate;
                 html += `<tr>
                     <td>${usd} créditos</td>
-                    <td>R$ ${brl.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td>R$ ${brl.toLocaleString('pt-BR', {minimumFractionDigits: 4, maximumFractionDigits: 4})}</td>
                 </tr>`;
             });
             
@@ -246,8 +231,8 @@ class DS_Admin_Settings_USD {
         foreach ( array_reverse( array_slice( $history, -10 ) ) as $entry ) {
             echo '<tr>';
             echo '<td>' . date( 'd/m/Y H:i', strtotime( $entry['date'] ) ) . '</td>';
-            echo '<td>R$ ' . number_format( $entry['old_rate'], 2, ',', '.' ) . '</td>';
-            echo '<td>R$ ' . number_format( $entry['new_rate'], 2, ',', '.' ) . '</td>';
+            echo '<td>R$ ' . number_format( $entry['old_rate'], 4, ',', '.' ) . '</td>';
+            echo '<td>R$ ' . number_format( $entry['new_rate'], 4, ',', '.' ) . '</td>';
             echo '<td>' . esc_html( $entry['user'] ) . '</td>';
             echo '</tr>';
         }

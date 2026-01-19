@@ -28,14 +28,15 @@ class DS_Credit_Converter {
 
     /**
      * Converte valor pago em BRL para créditos USD
+     * Usa precisão de 4 casas decimais para cálculo exato
      * 
      * @param float $amount_brl Valor pago em reais
-     * @return int Quantidade de créditos (USD)
+     * @return float Quantidade de créditos (USD)
      */
     public static function convert_payment_to_credits( $amount_brl ) {
-        $exchange_rate = self::get_exchange_rate();
+        $exchange_rate = self::get_exchange_rate(); // 4 casas decimais
         $credits = $amount_brl / $exchange_rate;
-        return floor( $credits * 100 ) / 100; // 2 casas decimais
+        return round( $credits, 4 ); // Precisão interna de 4 casas
     }
 
     /**
@@ -119,6 +120,7 @@ class DS_Credit_Converter {
 
     /**
      * Formata exibição de créditos com conversão
+     * Exibe apenas 2 casas decimais para o usuário
      * 
      * @param float $credits Quantidade de créditos
      * @param bool $show_brl Mostrar equivalente em BRL
@@ -129,7 +131,8 @@ class DS_Credit_Converter {
             return '';
         }
         
-        $display = $credits . ' créditos (US$ ' . number_format( $credits, 2, '.', ',' ) . ')';
+        // Exibe apenas 2 casas decimais para o usuário
+        $display = number_format( $credits, 2, '.', '' ) . ' créditos (US$ ' . number_format( $credits, 2, '.', ',' ) . ')';
         
         if ( $show_brl ) {
             $brl_value = self::convert_credits_to_brl( $credits );

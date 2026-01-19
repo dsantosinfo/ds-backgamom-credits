@@ -98,7 +98,7 @@ class DS_Elementor_Widgets {
         $widget_files = [
             'class-ds-product-price-widget.php',
             'class-ds-shop-price-widget.php', 
-            'class-ds-cart-widget.php'
+            'class-ds-cart-widget-simple.php'
         ];
         
         foreach ( $widget_files as $file ) {

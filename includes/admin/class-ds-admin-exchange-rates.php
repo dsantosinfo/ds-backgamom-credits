@@ -10,20 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DS_Admin_Exchange_Rates {
 
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'add_menu' ) );
         add_action( 'wp_ajax_ds_update_exchange_rate', array( $this, 'ajax_update_rate' ) );
         add_action( 'wp_ajax_ds_force_bcb_update', array( $this, 'ajax_force_bcb_update' ) );
-    }
-
-    public function add_menu() {
-        add_submenu_page(
-            'ds-backgamom-credits',
-            'Taxa de Câmbio',
-            'Taxa de Câmbio',
-            'manage_options',
-            'ds-exchange-rates',
-            array( $this, 'render_page' )
-        );
     }
 
     public function render_page() {
@@ -271,5 +259,3 @@ class DS_Admin_Exchange_Rates {
         }
     }
 }
-
-new DS_Admin_Exchange_Rates();
