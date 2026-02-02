@@ -92,15 +92,17 @@ class DS_Admin_Settings_USD {
                         
                         <div style="margin-bottom: 15px;">
                             <label>Créditos USD:</label>
-                            <input type="number" id="calc_usd" value="10" min="0" step="0.01" style="width: 100%;">
+                            <input type="number" id="calc_usd" value="10" min="0" step="0.01" style="width: 100%;" oninput="calculateUsdToBrl()">
                         </div>
                         
                         <div style="margin-bottom: 15px;">
                             <label>Valor BRL:</label>
-                            <input type="text" id="calc_brl" readonly style="width: 100%; background: #f0f0f0;">
+                            <input type="number" id="calc_brl" min="0" step="0.01" style="width: 100%;" oninput="calculateBrlToUsd()" placeholder="Digite valor em reais">
                         </div>
                         
-                        <button type="button" class="button button-secondary" onclick="calculateConversion()">Calcular</button>
+                        <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                            💡 Digite em qualquer campo para conversão automática
+                        </div>
                     </div>
 
                     <div class="card">
@@ -130,15 +132,24 @@ class DS_Admin_Settings_USD {
         </div>
 
         <script>
-        function calculateConversion() {
+        function calculateUsdToBrl() {
             const usd = parseFloat(document.getElementById('calc_usd').value) || 0;
             const rate = parseFloat(document.getElementById('exchange_rate_input').value) || <?php echo $current_rate; ?>;
             const brl = usd * rate;
             
-            document.getElementById('calc_brl').value = 'R$ ' + brl.toLocaleString('pt-BR', {
-                minimumFractionDigits: 4,
-                maximumFractionDigits: 4
-            });
+            document.getElementById('calc_brl').value = brl.toFixed(2);
+        }
+
+        function calculateBrlToUsd() {
+            const brl = parseFloat(document.getElementById('calc_brl').value) || 0;
+            const rate = parseFloat(document.getElementById('exchange_rate_input').value) || <?php echo $current_rate; ?>;
+            const usd = brl / rate;
+            
+            document.getElementById('calc_usd').value = usd.toFixed(4);
+        }
+
+        function calculateConversion() {
+            calculateUsdToBrl();
         }
 
         function updateExamples() {
@@ -150,7 +161,7 @@ class DS_Admin_Settings_USD {
                 const brl = usd * rate;
                 html += `<tr>
                     <td>${usd} créditos</td>
-                    <td>R$ ${brl.toLocaleString('pt-BR', {minimumFractionDigits: 4, maximumFractionDigits: 4})}</td>
+                    <td>R$ ${brl.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 </tr>`;
             });
             
@@ -161,13 +172,13 @@ class DS_Admin_Settings_USD {
         // Atualizar exemplos quando taxa mudar
         document.getElementById('exchange_rate_input').addEventListener('input', function() {
             updateExamples();
-            calculateConversion();
+            calculateUsdToBrl();
         });
 
         // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             updateExamples();
-            calculateConversion();
+            calculateUsdToBrl();
         });
         </script>
 

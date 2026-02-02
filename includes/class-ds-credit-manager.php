@@ -106,7 +106,8 @@ class DS_Credit_Manager {
             return __( 'Usuário não logado.', 'ds-backgamom-credits' );
         }
         $balance = self::get_balance( $user_id );
-        return '$ ' . number_format( $balance, 2 );
+        $class = $balance < 0 ? 'negative-balance' : 'positive-balance';
+        return '<span class="' . $class . '">$ ' . number_format( $balance, 2 ) . '</span>';
     }
     
     /**
@@ -125,10 +126,16 @@ class DS_Credit_Manager {
         <div class="ds-credit-dashboard">
             <div class="credit-summary">
                 <h3><?php esc_html_e('Meu Saldo', 'ds-backgamom-credits'); ?></h3>
-                <div class="balance-display">
+                <div class="balance-display <?php echo $balance < 0 ? 'negative' : 'positive'; ?>">
                     <span class="balance-amount">$ <?php echo number_format( $balance, 2 ); ?></span>
-                    <span class="balance-label"><?php esc_html_e('disponíveis', 'ds-backgamom-credits'); ?></span>
+                    <span class="balance-label"><?php echo $balance < 0 ? esc_html__('em débito', 'ds-backgamom-credits') : esc_html__('disponíveis', 'ds-backgamom-credits'); ?></span>
                 </div>
+                <?php if ( $balance < 0 ) : ?>
+                    <div class="negative-warning">
+                        <span class="dashicons dashicons-warning"></span>
+                        <?php esc_html_e('Seu saldo está negativo. Adicione créditos para regularizar.', 'ds-backgamom-credits'); ?>
+                    </div>
+                <?php endif; ?>
             </div>
             
             <div class="credit-actions">
@@ -139,10 +146,15 @@ class DS_Credit_Manager {
         <style>
         .ds-credit-dashboard { max-width: 600px; margin: 20px 0; }
         .credit-summary { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
-        .balance-amount { font-size: 2.5em; font-weight: bold; color: #28a745; display: block; }
+        .balance-display.positive .balance-amount { font-size: 2.5em; font-weight: bold; color: #28a745; display: block; }
+        .balance-display.negative .balance-amount { font-size: 2.5em; font-weight: bold; color: #dc3545; display: block; }
         .balance-label { color: #6c757d; }
+        .negative-warning { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-top: 15px; }
+        .negative-warning .dashicons { vertical-align: middle; margin-right: 5px; }
         .credit-actions { text-align: center; }
         .credit-actions .button { margin: 0 10px; }
+        .negative-balance { color: #dc3545; font-weight: bold; }
+        .positive-balance { color: #28a745; }
         </style>
         <?php
         return ob_get_clean();
@@ -338,10 +350,21 @@ class DS_Credit_Manager {
         }
 
         $current_balance = self::get_balance( $user_id );
+        $settings = get_option( 'ds_backgamom_credits_settings', [] );
+        $allow_negative = ! empty( $settings['allow_negative_balance'] );
+        $negative_limit = floatval( $settings['negative_balance_limit'] ?? 0 );
         
-        // Verifica se há saldo suficiente
-        if ( $current_balance < $amount ) {
+        // Verifica se há saldo suficiente ou se saldos negativos são permitidos
+        if ( ! $allow_negative && $current_balance < $amount ) {
             return false;
+        }
+        
+        // Se saldos negativos são permitidos, verifica o limite
+        if ( $allow_negative && $negative_limit > 0 ) {
+            $new_balance = $current_balance - floatval( $amount );
+            if ( $new_balance < -$negative_limit ) {
+                return false; // Excederia o limite negativo
+            }
         }
 
         $new_balance = $current_balance - floatval( $amount );
@@ -420,7 +443,23 @@ class DS_Credit_Manager {
      * @return bool True se tem saldo suficiente, false caso contrário.
      */
     public static function has_sufficient_balance( $user_id, $amount ) {
-        return self::get_balance( $user_id ) >= $amount;
+        $settings = get_option( 'ds_backgamom_credits_settings', [] );
+        $allow_negative = ! empty( $settings['allow_negative_balance'] );
+        $negative_limit = floatval( $settings['negative_balance_limit'] ?? 0 );
+        
+        $current_balance = self::get_balance( $user_id );
+        
+        if ( ! $allow_negative ) {
+            return $current_balance >= $amount;
+        }
+        
+        // Se saldos negativos são permitidos, verifica o limite
+        if ( $negative_limit > 0 ) {
+            $new_balance = $current_balance - $amount;
+            return $new_balance >= -$negative_limit;
+        }
+        
+        return true; // Sem limite negativo
     }
     
     /**

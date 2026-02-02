@@ -1,8 +1,8 @@
 # DS Backgamom Credits
 
-**Versão:** 2.0.0  
+**Versão:** 2.1.0  
 **Status:** ✅ IMPLEMENTADO E TESTADO  
-**Última atualização:** 05/11/2025  
+**Última atualização:** 21/01/2026  
 **Compatibilidade:** WordPress 5.0+, WooCommerce 5.0+, PHP 7.4+
 
 Sistema completo de créditos para a plataforma Backgamom Brasil com integração ao gateway de pagamento Asaas e suporte completo ao HPOS (High-Performance Order Storage).
@@ -15,6 +15,7 @@ Sistema de moeda virtual (créditos) que substitui o TeraWallet, oferecendo inte
 
 ### Sistema de Créditos
 - **Carteira Virtual**: Sistema próprio de créditos
+- **Saldos Negativos**: Permite saldos negativos com limite configurável
 - **Transações Seguras**: Histórico completo de movimentações
 - **Saldo em Tempo Real**: Consulta instantânea de saldos
 - **API Completa**: Funções para integração com outros plugins
@@ -68,9 +69,16 @@ $success = dsbc_add_credits($user_id, $amount, $reason);
 $success = dsbc_deduct_credits($user_id, $amount, $reason);
 ```
 
-#### Verificar Saldo Suficiente
+#### Verificar Saldo Suficiente (com suporte a negativos)
 ```php
 $has_balance = dsbc_has_sufficient_balance($user_id, $amount);
+```
+
+#### Obter Limite de Saldo Negativo
+```php
+$settings = get_option('ds_backgamom_credits_settings', []);
+$negative_limit = floatval($settings['negative_balance_limit'] ?? 0);
+$allow_negative = !empty($settings['allow_negative_balance']);
 ```
 
 #### Processar Saque
@@ -80,10 +88,11 @@ $success = dsbc_process_withdrawal($user_id, $amount, $method, $notes);
 
 ### Shortcodes Disponíveis
 
-#### Saldo Simples
+#### Saldo Simples (com suporte a negativos)
 ```
 [ds_credit_balance format="badge" show_label="true"]
 ```
+Exibe saldos negativos em vermelho automaticamente.
 
 #### Dashboard Completo Otimizado
 ```
@@ -91,6 +100,7 @@ $success = dsbc_process_withdrawal($user_id, $amount, $method, $notes);
 ```
 Funcionalidades do dashboard:
 - Saldo destacado com design atrativo
+- **Aviso visual para saldos negativos**
 - Estatísticas: Total Ganho, Total Gasto, Transações
 - Histórico das últimas transações com AJAX
 - Botões de ação (Comprar/Sacar)
@@ -142,6 +152,7 @@ Exibe formulário completo para solicitação de saques com:
 - **Webhook URL**: Endpoint para confirmações
 - **Formas de Pagamento**: PIX, Cartão, Boleto
 - **Taxas**: Configuráveis por método
+- **Saldos Negativos**: Limite máximo configurável para negativação
 
 ### Fluxo de Pagamento
 1. **Produto de Crédito**: Cliente adiciona ao carrinho
@@ -275,6 +286,11 @@ O sistema busca o telefone do usuário em:
 4. **Webhook**: Configurar URL de retorno
 5. **Formas de Pagamento**: Ativar PIX/Cartão/Boleto
 
+### Configurações de Saldos Negativos
+1. **Ativar Saldos Negativos**: Marcar checkbox nas configurações
+2. **Definir Limite**: Valor máximo de negativação (ex: 100 = até -$100)
+3. **Monitoramento**: Relatórios mostram usuários com saldo negativo
+
 ### Configurações de Produtos
 1. **Criar Produto**: Tipo "Virtual"
 2. **Meta Créditos**: `_dsbc_credit_amount` = quantidade
@@ -345,6 +361,7 @@ ds-backgamom-credits/
 
 ### Estatísticas em Tempo Real
 - **Total de Créditos**: Soma de todos os créditos em circulação
+- **Saldos Negativos**: Total em débito e quantidade de usuários
 - **Usuários Ativos**: Quantidade de usuários com saldo > 0
 - **Pedidos Hoje**: Pedidos processados no dia atual
 
@@ -359,8 +376,16 @@ ds-backgamom-credits/
 - **Gerenciar Saques**: Aprovação/rejeição de solicitações
 - **Histórico Completo**: Log de todas as transações
 - **Relatórios**: Análises detalhadas do sistema
+- **Saldos Negativos**: Monitoramento de usuários em débito
 
 ## 📝 Changelog
+
+### v2.1.0 (21/01/2026)
+- **NOVO**: Sistema de saldos negativos com limite configurável
+- **NOVO**: Relatórios incluem estatísticas de saldos negativos
+- **NOVO**: Interface visual diferenciada para saldos negativos
+- **NOVO**: Seção dedicada para usuários em débito nos relatórios
+- **MELHORIA**: Shortcodes atualizados com suporte a saldos negativos
 
 ### v2.0.0 (05/11/2025)
 - Sistema completo de créditos implementado

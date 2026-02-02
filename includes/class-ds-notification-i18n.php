@@ -146,6 +146,19 @@ class DS_Notification_i18n {
                 'pt_BR' => "💰 Olá {name}! Foram adicionados {amount} à sua conta. Pagamento previsto para {due_date} via {payment_method}. Observação: {observation}. Seu saldo atual é de {balance}.",
                 'en_US' => "💰 Hello {name}! {amount} have been added to your account. Payment scheduled for {due_date} via {payment_method}. Note: {observation}. Your current balance is {balance}.",
                 'es_ES' => "💰 ¡Hola {name}! Se agregaron {amount} a tu cuenta. Pago programado para {due_date} vía {payment_method}. Observación: {observation}. Tu saldo actual es de {balance}."
+            ],
+            
+            // Templates de Torneios
+            'tournament_registration' => [
+                'pt_BR' => "🏆 *Inscrição Confirmada!*\n\nOlá {name}!\nSua inscrição no torneio *{tournament}* foi confirmada com sucesso!\n\n💰 Custo: {cost}\n📅 Fique atento às notificações sobre o início do torneio.\n\n🎯 Boa sorte!",
+                'en_US' => "🏆 *Registration Confirmed!*\n\nHello {name}!\nYour registration for tournament *{tournament}* has been confirmed!\n\n💰 Cost: {cost}\n📅 Stay tuned for notifications about the tournament start.\n\n🎯 Good luck!",
+                'es_ES' => "🏆 *¡Inscripción Confirmada!*\n\n¡Hola {name}!\n¡Tu inscripción en el torneo *{tournament}* ha sido confirmada!\n\n💰 Costo: {cost}\n📅 Estate atento a las notificaciones sobre el inicio del torneo.\n\n🎯 ¡Buena suerte!"
+            ],
+            
+            'tournament_start' => [
+                'pt_BR' => "🎮 *Torneio Iniciado!*\n\nOlá {name}!\nO torneio *{tournament}* foi iniciado!\n\n📅 Horário: {start_time}\n⚡ Em breve você receberá uma notificação no grupo para sua partida.\n\n🏆 Prepare-se e boa sorte!",
+                'en_US' => "🎮 *Tournament Started!*\n\nHello {name}!\nTournament *{tournament}* has started!\n\n📅 Time: {start_time}\n⚡ You will soon receive a notification in the group for your match.\n\n🏆 Get ready and good luck!",
+                'es_ES' => "🎮 *¡Torneo Iniciado!*\n\n¡Hola {name}!\n¡El torneo *{tournament}* ha comenzado!\n\n📅 Horario: {start_time}\n⚡ Pronto recibirás una notificación en el grupo para tu partida.\n\n🏆 ¡Prepárate y buena suerte!"
             ]
         ];
         
@@ -342,7 +355,9 @@ class DS_Notification_i18n {
             'wise_approved' => 'Pagamento WISE Aprovado',
             'wise_rejected' => 'Pagamento WISE Rejeitado',
             'payment_reminder' => 'Lembrete de Pagamento',
-            'credits_scheduled' => 'Créditos com Pagamento Agendado'
+            'credits_scheduled' => 'Créditos com Pagamento Agendado',
+            'tournament_registration' => 'Inscrição em Torneio',
+            'tournament_start' => 'Início de Torneio'
         ];
     }
 
@@ -403,6 +418,16 @@ class DS_Notification_i18n {
                 'payment_method' => 'Método de pagamento',
                 'observation' => 'Observação/motivo',
                 'balance' => 'Saldo atual'
+            ],
+            'tournament_registration' => [
+                'name' => 'Nome do usuário',
+                'tournament' => 'Nome do torneio',
+                'cost' => 'Custo da inscrição'
+            ],
+            'tournament_start' => [
+                'name' => 'Nome do usuário',
+                'tournament' => 'Nome do torneio',
+                'start_time' => 'Horário de início'
             ]
         ];
 

@@ -19,6 +19,7 @@ class DS_Backgamom_Credits_Admin {
     private $withdrawals;
     private $templates;
     private $products;
+    private $gateway_fees;
 
     public static function instance() {
         if ( is_null( self::$instance ) ) {
@@ -43,6 +44,7 @@ class DS_Backgamom_Credits_Admin {
         require_once DSBC_PLUGIN_PATH . 'includes/admin/class-ds-admin-withdrawals.php';
         require_once DSBC_PLUGIN_PATH . 'includes/admin/class-ds-admin-templates.php';
         require_once DSBC_PLUGIN_PATH . 'includes/admin/class-ds-admin-products.php';
+        require_once DSBC_PLUGIN_PATH . 'includes/admin/class-ds-admin-gateway-fees.php';
     }
 
     private function init_components() {
@@ -54,6 +56,7 @@ class DS_Backgamom_Credits_Admin {
         $this->withdrawals = new DS_Admin_Withdrawals();
         $this->templates = new DS_Admin_Templates();
         $this->products = new DS_Admin_Products();
+        $this->gateway_fees = new DS_Admin_Gateway_Fees();
     }
 
     private function init_hooks() {
@@ -140,6 +143,15 @@ class DS_Backgamom_Credits_Admin {
         
         add_submenu_page(
             'ds-backgamom-credits',
+            'Taxas dos Gateways',
+            'Taxas dos Gateways',
+            'manage_options',
+            'ds-gateway-fees',
+            [ $this, 'gateway_fees_page' ]
+        );
+        
+        add_submenu_page(
+            'ds-backgamom-credits',
             'Configurações USD',
             'Configurações USD',
             'manage_options',
@@ -157,6 +169,15 @@ class DS_Backgamom_Credits_Admin {
         );
     }
 
+    
+    public function gateway_fees_page() {
+        if ( class_exists( 'DS_Admin_Gateway_Fees' ) ) {
+            $gateway_fees = new DS_Admin_Gateway_Fees();
+            $gateway_fees->render_page();
+        } else {
+            echo '<div class="wrap"><h1>Taxas dos Gateways não disponíveis</h1></div>';
+        }
+    }
     
     public function settings_usd_page() {
         if ( class_exists( 'DS_Admin_Settings_USD' ) ) {
@@ -191,6 +212,22 @@ class DS_Backgamom_Credits_Admin {
             'min_withdrawal',
             'Saque Mínimo (Créditos USD)',
             [ $this, 'min_withdrawal_field' ],
+            'ds-backgamom-credits',
+            'general_section'
+        );
+
+        add_settings_field(
+            'negative_balance_limit',
+            'Limite de Saldo Negativo (USD)',
+            [ $this, 'negative_balance_limit_field' ],
+            'ds-backgamom-credits',
+            'general_section'
+        );
+
+        add_settings_field(
+            'allow_negative_balance',
+            'Permitir Saldos Negativos',
+            [ $this, 'allow_negative_balance_field' ],
             'ds-backgamom-credits',
             'general_section'
         );
@@ -285,6 +322,14 @@ class DS_Backgamom_Credits_Admin {
                         <tr>
                             <th scope="row">Saque Mínimo (Créditos USD)</th>
                             <td><?php $this->min_withdrawal_field(); ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Permitir Saldos Negativos</th>
+                            <td><?php $this->allow_negative_balance_field(); ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Limite de Saldo Negativo (USD)</th>
+                            <td><?php $this->negative_balance_limit_field(); ?></td>
                         </tr>
                         <tr>
                             <th scope="row">Completar Pedidos Automaticamente</th>
@@ -397,6 +442,27 @@ class DS_Backgamom_Credits_Admin {
         $checked = isset( $settings['notifications'] ) ? checked( $settings['notifications'], 1, false ) : 'checked';
         echo '<input type="checkbox" name="' . $this->option_name . '[notifications]" value="1" ' . $checked . ' />';
         echo '<label> Enviar notificações via WhatsApp quando créditos forem adicionados</label>';
+    }
+    
+    public function allow_negative_balance_field() {
+        $settings = get_option( $this->option_name, [] );
+        $checked = isset( $settings['allow_negative_balance'] ) ? checked( $settings['allow_negative_balance'], 1, false ) : '';
+        echo '<input type="checkbox" name="' . $this->option_name . '[allow_negative_balance]" value="1" ' . $checked . ' />';
+        echo '<label> Permitir que usuários tenham saldo negativo</label>';
+        echo '<p class="description">Quando ativo, usuários podem ter saldo negativo até o limite definido abaixo.</p>';
+    }
+    
+    public function negative_balance_limit_field() {
+        $settings = get_option( $this->option_name, [] );
+        $value = $settings['negative_balance_limit'] ?? '100';
+        echo '<input type="number" name="' . $this->option_name . '[negative_balance_limit]" value="' . esc_attr( $value ) . '" step="0.01" min="0" />';
+        echo '<p class="description">Valor máximo que o saldo pode ser negativado (ex: 100 = até -$100.00).</p>';
+        
+        if ( $value > 0 ) {
+            $exchange_rate = class_exists( 'DS_Credit_Converter' ) ? DS_Credit_Converter::get_exchange_rate() : 5.67;
+            $value_brl = $value * $exchange_rate;
+            echo '<small style="color: #666;">Equivalente: até -R$ ' . number_format( $value_brl, 2, ',', '.' ) . '</small>';
+        }
     }
     
     public function withdrawal_form_field() {

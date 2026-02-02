@@ -76,6 +76,13 @@ class DS_Admin_Reports extends DS_Admin_Base {
                 <?php $this->display_top_users(); ?>
             </div>
         </div>
+        
+        <div class="postbox">
+            <h2 class="hndle"><span class="dashicons dashicons-warning"></span> Usuários com Saldo Negativo</h2>
+            <div class="inside">
+                <?php $this->display_negative_users(); ?>
+            </div>
+        </div>
         <?php
     }
 
@@ -86,6 +93,14 @@ class DS_Admin_Reports extends DS_Admin_Base {
         
         $total_credits = $wpdb->get_var(
             "SELECT SUM(CAST(meta_value AS DECIMAL(10,2))) FROM {$wpdb->usermeta} WHERE meta_key = '_dsbc_credit_balance'"
+        );
+        
+        $negative_balances = $wpdb->get_var(
+            "SELECT SUM(CAST(meta_value AS DECIMAL(10,2))) FROM {$wpdb->usermeta} WHERE meta_key = '_dsbc_credit_balance' AND CAST(meta_value AS DECIMAL(10,2)) < 0"
+        );
+        
+        $users_negative = $wpdb->get_var(
+            "SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key = '_dsbc_credit_balance' AND CAST(meta_value AS DECIMAL(10,2)) < 0"
         );
         
         $total_deposits = $wpdb->get_var(
@@ -104,10 +119,18 @@ class DS_Admin_Reports extends DS_Admin_Base {
         
         echo '<div class="dsbc-stat-box">';
         echo '<div class="dsbc-stat-number">' . number_format( $total_credits ?: 0, 2 ) . '</div>';
-        echo '<div>Créditos USD Ativos</div>';
+        echo '<div>Créditos USD Líquidos</div>';
         $exchange_rate = class_exists( 'DS_Credit_Converter' ) ? DS_Credit_Converter::get_exchange_rate() : 5.67;
         echo '<small>≈ R$ ' . number_format( ($total_credits ?: 0) * $exchange_rate, 2, ',', '.' ) . '</small>';
         echo '</div>';
+        
+        if ( $negative_balances < 0 ) {
+            echo '<div class="dsbc-stat-box negative">';
+            echo '<div class="dsbc-stat-number">' . number_format( abs($negative_balances), 2 ) . '</div>';
+            echo '<div>Total em Débito USD</div>';
+            echo '<small>' . $users_negative . ' usuários</small>';
+            echo '</div>';
+        }
         
         echo '<div class="dsbc-stat-box">';
         echo '<div class="dsbc-stat-number">' . number_format( $total_deposits ?: 0, 2 ) . '</div>';
@@ -125,6 +148,8 @@ class DS_Admin_Reports extends DS_Admin_Base {
         echo '</div>';
         
         echo '</div>';
+        
+        echo '<style>.dsbc-stat-box.negative { border-left: 4px solid #dc3545; } .dsbc-stat-box.negative .dsbc-stat-number { color: #dc3545; }</style>';
     }
 
     private function display_detailed_sales() {
@@ -195,7 +220,7 @@ class DS_Admin_Reports extends DS_Admin_Base {
         global $wpdb;
         
         $results = $wpdb->get_results(
-            "SELECT u.display_name, u.user_email, CAST(um.meta_value AS UNSIGNED) as credits
+            "SELECT u.display_name, u.user_email, CAST(um.meta_value AS DECIMAL(10,2)) as credits
              FROM {$wpdb->users} u
              INNER JOIN {$wpdb->usermeta} um ON u.ID = um.user_id
              WHERE um.meta_key = '_dsbc_credit_balance' AND CAST(um.meta_value AS DECIMAL(10,2)) > 0
@@ -218,6 +243,33 @@ class DS_Admin_Reports extends DS_Admin_Base {
             echo '</tbody></table>';
         } else {
             echo '<div class="notice notice-info inline"><p>Nenhum usuário com créditos encontrado.</p></div>';
+        }
+    }
+    
+    private function display_negative_users() {
+        global $wpdb;
+        
+        $results = $wpdb->get_results(
+            "SELECT u.display_name, u.user_email, CAST(um.meta_value AS DECIMAL(10,2)) as credits
+             FROM {$wpdb->users} u
+             INNER JOIN {$wpdb->usermeta} um ON u.ID = um.user_id
+             WHERE um.meta_key = '_dsbc_credit_balance' AND CAST(um.meta_value AS DECIMAL(10,2)) < 0
+             ORDER BY CAST(um.meta_value AS DECIMAL(10,2)) ASC LIMIT 15"
+        );
+
+        if ( $results ) {
+            echo '<table class="wp-list-table widefat fixed striped">';
+            echo '<thead><tr><th>Usuário</th><th>Saldo Negativo</th><th>Ações</th></tr></thead><tbody>';
+            foreach ( $results as $row ) {
+                echo '<tr>';
+                echo '<td><strong>' . esc_html( $row->display_name ) . '</strong><br><small style="color: #666;">' . esc_html( $row->user_email ) . '</small></td>';
+                echo '<td><span style="color: #dc3545; font-weight: bold; font-size: 16px;">-$ ' . number_format( abs($row->credits), 2 ) . '</span></td>';
+                echo '<td><a href="' . admin_url( 'admin.php?page=ds-credits-lookup&user_email=' . urlencode($row->user_email) ) . '" class="button button-small">Gerenciar</a></td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+        } else {
+            echo '<div class="notice notice-success inline"><p>Nenhum usuário com saldo negativo encontrado.</p></div>';
         }
     }
 }
